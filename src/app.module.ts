@@ -42,14 +42,18 @@ const cookieSession = require('cookie-session');
         whitelist: true
       })
     },
-    
+
   ],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer){
+  constructor(
+    private configService: ConfigService
+  ) { }
+
+  configure(consumer: MiddlewareConsumer) {
     consumer.apply(cookieSession({
-      keys: ['asda']
+      keys: [this.configService.get('COOKIE_KEY')]
     }))
-    .forRoutes('*');
+      .forRoutes('*');
   }
 }
